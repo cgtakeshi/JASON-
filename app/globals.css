@@ -112,3 +112,17 @@
 .projects .project-card{background:#000!important}
 .work-preview video,
 .project-gallery-grid article>button video{object-fit:contain;background:#000}
+
+/* Resume information from the supplied portfolio deck */
+.timeline-row{grid-template-columns:120px 56px minmax(240px,.72fr) 1.5fr}
+.timeline-no{line-height:1.5;color:var(--lime)}
+.timeline-row>img,.company-mark{width:50px;height:50px}
+.company-mark{display:grid;place-items:center;border:1px solid var(--glass-line);border-radius:12px;background:#ffffff0a;color:#d7d8d2;font:700 13px/1 monospace;letter-spacing:.08em}
+.strength-grid{grid-template-columns:repeat(3,1fr);grid-template-rows:minmax(360px,auto)}
+.strength-grid article:nth-child(n){grid-column:auto;grid-row:auto}
+.contact-details{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin-top:16px}
+.contact-details span,.contact-bottom .contact-details a{width:auto;height:auto;padding:0;border:0;border-radius:0;background:transparent;color:#a7aaa3;font:11px/1.4 monospace;letter-spacing:.08em}
+.contact-bottom .contact-details a:hover{background:transparent;color:var(--lime)}
+.contact-bottom .back-top{width:62px;height:62px}
+@media(max-width:980px){.timeline-row{grid-template-columns:105px 54px 1fr}.timeline-row>div:last-child{grid-column:3}.strength-grid{grid-template-columns:1fr;grid-template-rows:auto}.strength-grid article:nth-child(n){grid-column:auto;grid-row:auto}}
+@media(max-width:720px){.timeline-row{grid-template-columns:1fr 44px minmax(0,1fr)}.timeline-no{grid-column:1/-1}.timeline-row>div:last-child{grid-column:2/-1;padding-left:0}.company-mark{width:38px;height:38px}.contact-details{display:grid;gap:8px}}

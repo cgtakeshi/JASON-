@@ -14,6 +14,7 @@ MANIFEST = Path(__file__).resolve().parents[1] / "app" / "portfolio-manifest.jso
 VALID_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp"}
 VIDEO_EXTENSIONS = {".mp4"}
 UP_POOL_VIDEO_SIZE = (480, 758)
+MAX_OUTPUT_BYTES = 20 * 1024 * 1024
 PROJECT_ORDER = {
     "Zodiac Heroes": 0,
     "悠星大陆": 1,
@@ -25,6 +26,14 @@ PROJECT_ORDER = {
     "桃花源记 & 少年仙侠传": 7,
 }
 SQUARE_COVER_SIZE = 1200
+
+
+def source_digest(source: Path, relative: Path) -> str:
+    digest = hashlib.sha1(str(relative).encode("utf-8"))
+    with source.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()[:12]
 
 
 def save_square_cover(source: Path, destination: Path) -> tuple[int, int]:
@@ -103,8 +112,11 @@ def main() -> None:
 
     for source in files:
         relative = source.relative_to(SOURCE)
-        digest = hashlib.sha1(str(relative).encode("utf-8")).hexdigest()[:12]
+        digest = source_digest(source, relative)
         if source.suffix.lower() in VIDEO_EXTENSIONS:
+            if source.stat().st_size > MAX_OUTPUT_BYTES:
+                print(f"skip oversized video: {relative}")
+                continue
             destination = OUTPUT / f"work-{digest}.mp4"
             if not destination.exists() or destination.stat().st_size != source.stat().st_size:
                 shutil.copy2(source, destination)
@@ -142,6 +154,12 @@ def main() -> None:
                 image.save(destination, "WEBP", quality=88, method=6)
                 width, height = image.size
 
+            if destination.stat().st_size > MAX_OUTPUT_BYTES:
+                with Image.open(destination) as image:
+                    image.thumbnail((1800, 1800), Image.Resampling.LANCZOS)
+                    image.convert("RGB").save(destination, "WEBP", quality=78, method=6)
+                    width, height = image.size
+
         entries.append(
             {
                 "id": digest,
@@ -161,6 +179,9 @@ def main() -> None:
     for generated in (*OUTPUT.glob("work-*"), *OUTPUT.glob("cover-*")):
         if generated.name not in retained:
             generated.unlink()
+    oversized = [path for path in OUTPUT.iterdir() if path.is_file() and path.stat().st_size > MAX_OUTPUT_BYTES]
+    if oversized:
+        raise RuntimeError("generated files exceed 20 MB: " + ", ".join(path.name for path in oversized))
     MANIFEST.write_text(json.dumps(entries, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"count": len(entries), "output": str(OUTPUT)}, ensure_ascii=False))
 

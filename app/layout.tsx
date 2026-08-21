@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jason Zhang · Game Art Director",
-  description: "游戏美术总监 Jason Zhang 个人作品集",
+  title: "张斌 · 游戏美术总监作品集",
+  description: "张斌，拥有 15 年以上角色设计与团队管理经验的游戏美术总监。",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
