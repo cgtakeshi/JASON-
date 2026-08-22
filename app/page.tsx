@@ -146,7 +146,7 @@ export default function Home() {
         <div className="hero-content shell">
           <p className="eyebrow"><span /> GAME ART DIRECTOR · PORTFOLIO</p>
           <h1>CREATING<br />WORLDS<span>.</span></h1>
-          <div className="hero-bottom"><p>张斌 · 游戏美术总监<br />让美术为产品服务，让品质真正落地</p><div className="hero-metrics"><span><b>15+</b> 年行业经验</span><span><b>10+</b> 参与项目</span><span><b>7</b> 段职业经历</span></div><a href="#experience" className="scroll-cue"><span>↓</span> SCROLL TO EXPLORE</a></div>
+          <div className="hero-bottom"><p>张斌 · 游戏美术总监<br />让美术为产品服务，让品质真正落地</p><div className="hero-metrics"><span><b>17+</b> 年行业经验</span><span><b>10+</b> 参与项目</span><span><b>7</b> 段职业经历</span></div><a href="#experience" className="scroll-cue"><span>↓</span> SCROLL TO EXPLORE</a></div>
         </div>
         <div className="hero-showcase" aria-label="精选项目快速预览"><div className="hero-showcase-track">{[...projects, ...projects].map((project, index) => <button key={`${project.no}-${index}`} onClick={() => setOpenProject(project.folder)}><img src={asset(projectCover(project))} alt="" /><span>{project.title}</span></button>)}</div></div>
         <div className="hero-index">01 <span>/</span> 05</div>
@@ -155,13 +155,13 @@ export default function Home() {
       <section className="about section shell" id="experience">
         <div className="section-head" data-reveal><p>01 / ABOUT & EXPERIENCE</p><p>SHENZHEN · CHINA</p></div>
         <div className="about-grid">
-          <div className="portrait-wrap" data-reveal data-tilt><img src={asset("/portrait-art.png")} alt="角色美术作品" /><span className="portrait-label">SELECTED CHARACTER ART</span></div>
+          <div className="portrait-wrap portrait-ailin" data-reveal data-tilt><img src={asset("/portrait-ailin.png")} alt="《Zodiac Heroes》艾琳角色美术作品" /><span className="portrait-label">EILEEN · SELECTED CHARACTER ART</span></div>
           <div className="intro" data-reveal data-tilt>
-            <p className="eyebrow dark"><span /> ZHANG BIN · GAME ART DIRECTOR</p>
-            <h2>从资深原画到美术总监<br />让美术为<span>产品服务</span></h2>
-            <p className="intro-copy">15 年以上角色设计与团队管理经验，经历覆盖 MMO、大世界、RPG 等多类型产品，擅长卡通风格化设计；具备多款 0–1 项目从风格孵化到上线落地的完整开发经验，能够在设计品质、生产效率与产品目标之间取得平衡。</p>
-            <div className="facts"><div><b>15+</b><span>年行业经验</span></div><div><b>10+</b><span>参与项目</span></div><div><b>多款</b><span>0–1 完整开发</span></div></div>
-            <div className="resume-note">熟悉 PBR、卡通渲染、3 渲 2 与 3D 制作流程 · 美术总监 / 主美 / 角色主管 / 资深角色原画</div>
+            <p className="eyebrow dark"><span /> ZHANG BIN / GAME ART DIRECTOR</p>
+            <h2 className="intro-title"><span className="intro-en">DESIGN · SYSTEM · DELIVERY</span><span className="intro-cn">从设计到管理<br />让品质真正落地</span></h2>
+            <p className="intro-copy"><span className="copy-en">17+ YEARS IN GAME ART / ART DIRECTION &amp; TEAM LEADERSHIP</span>17+ 年游戏美术经验，覆盖 MMO、开放世界、RPG 与休闲三消。历任美术总监、主美、角色主管与资深角色原画，具备风格探索、标准制定、团队协作和上线验收经验。</p>
+            <div className="facts"><div><b>17+</b><span><em>YEARS</em>游戏美术经验</span></div><div><b>10+</b><span><em>PROJECTS</em>参与项目</span></div><div><b>0→1</b><span><em>FULL CYCLE</em>完整开发经验</span></div></div>
+            <div className="resume-note"><span>CORE EXPERTISE</span>风格化角色设计 · PBR · 卡通渲染 · 3 渲 2 · 3D 制作流程 · 品质与团队管理</div>
           </div>
         </div>
         <div className="timeline">

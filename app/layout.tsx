@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,14 +13,22 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "张斌 · 游戏美术总监作品集",
-  description: "张斌，拥有 15 年以上角色设计与团队管理经验的游戏美术总监。",
-  icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const imageUrl = `${protocol}://${host}/og.png`;
+  const title = "张斌 · 游戏美术总监作品集";
+  const description = "张斌，拥有 17+ 年游戏美术、角色设计与团队管理经验的游戏美术总监。";
+
+  return {
+    title,
+    description,
+    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    openGraph: { title, description, images: [{ url: imageUrl, width: 1672, height: 941, alt: title }] },
+    twitter: { card: "summary_large_image", title, description, images: [imageUrl] },
+  };
+}
 
 export default function RootLayout({
   children,

@@ -126,3 +126,30 @@
 .contact-bottom .back-top{width:62px;height:62px}
 @media(max-width:980px){.timeline-row{grid-template-columns:105px 54px 1fr}.timeline-row>div:last-child{grid-column:3}.strength-grid{grid-template-columns:1fr;grid-template-rows:auto}.strength-grid article:nth-child(n){grid-column:auto;grid-row:auto}}
 @media(max-width:720px){.timeline-row{grid-template-columns:1fr 44px minmax(0,1fr)}.timeline-no{grid-column:1/-1}.timeline-row>div:last-child{grid-column:2/-1;padding-left:0}.company-mark{width:38px;height:38px}.contact-details{display:grid;gap:8px}}
+
+/* Bilingual profile typography and Eileen artwork */
+:root{
+  --font-latin:var(--font-geist-sans),"Helvetica Neue",Arial,sans-serif;
+  --font-cjk:"Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei UI","Microsoft YaHei",sans-serif;
+}
+body{font-family:var(--font-cjk);font-synthesis:none;text-rendering:optimizeLegibility}
+.eyebrow,.section-head,.hero-metrics,.portrait-label,.intro-en,.copy-en,.facts em,.resume-note>span{font-family:var(--font-latin)}
+.portrait-wrap.portrait-ailin{isolation:isolate;background:radial-gradient(circle at 52% 34%,#dff6eb 0%,#64766f 40%,#151918 76%)}
+.portrait-wrap.portrait-ailin:after{content:"";position:absolute;z-index:-1;inset:auto 8% -12% 8%;height:42%;border-radius:50%;background:#b9ff9440;filter:blur(70px)}
+.portrait-wrap.portrait-ailin img{position:absolute;left:50%;bottom:-1.5%;width:auto;height:104%;max-width:none;object-fit:contain;object-position:center bottom;transform:translateX(-50%);filter:saturate(.94) contrast(1.02);will-change:transform}
+.portrait-wrap.portrait-ailin:before{z-index:2}
+.portrait-wrap.portrait-ailin .portrait-label{left:32px;bottom:30px;padding:9px 12px;border:1px solid #ffffff30;border-radius:999px;background:#0a0d0b70;backdrop-filter:blur(14px);font-size:9px;line-height:1;letter-spacing:.14em}
+.intro-title{display:grid;gap:18px}
+.intro .intro-title .intro-en{display:block;color:var(--lime);font-size:clamp(11px,.9vw,15px);font-style:normal;font-weight:650;line-height:1.15;letter-spacing:.2em}
+.intro .intro-title .intro-cn{display:block;color:#f7f7f1;font-family:var(--font-cjk);font-size:clamp(40px,4.35vw,76px);font-style:normal;font-weight:720;line-height:1.14;letter-spacing:-.055em}
+.intro-copy{max-width:800px;margin:38px 0 40px;font-family:var(--font-cjk);font-size:clamp(14px,1.05vw,17px);font-weight:400;line-height:1.95;letter-spacing:.012em}
+.copy-en{display:block;margin-bottom:13px;color:#d6d8d1;font-size:10px;font-weight:650;line-height:1.3;letter-spacing:.17em}
+.facts{gap:0;padding:25px 0}
+.facts div{gap:9px;padding-inline:clamp(16px,2vw,30px)}
+.facts b{font-family:var(--font-latin);font-size:clamp(32px,2.7vw,46px);font-weight:650;line-height:1;letter-spacing:-.055em}
+.facts span{display:grid;gap:5px;font-family:var(--font-cjk);font-size:10px;line-height:1.35}
+.facts span em{color:#d4d6cf;font-size:8px;font-style:normal;font-weight:650;letter-spacing:.16em}
+.resume-note{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 11px;margin-top:24px;padding-left:0;border-left:0;font-family:var(--font-cjk);font-size:10px;line-height:1.75;letter-spacing:.025em}
+.resume-note>span{color:var(--lime);font-size:8px;font-weight:700;letter-spacing:.16em}
+@media(max-width:1100px){.intro .intro-title .intro-cn{font-size:38px;line-height:1.16}.about-grid{gap:clamp(30px,5vw,70px)}}
+@media(max-width:720px){.portrait-wrap.portrait-ailin img{height:101%;bottom:0}.portrait-wrap.portrait-ailin .portrait-label{left:20px;bottom:20px}.intro-title{gap:14px}.intro .intro-title .intro-cn{font-size:36px;line-height:1.16;letter-spacing:-.045em}.intro-copy{margin:30px 0 32px;font-size:14px;line-height:1.9}.facts{padding:22px 0}.facts div{padding-inline:11px}.facts b{font-size:29px}.facts span{font-size:9px}.facts span em{font-size:7px}.resume-note{font-size:9px}}
