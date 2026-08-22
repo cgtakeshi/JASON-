@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import works from "./portfolio-manifest.json";
+import BlobCursor from "../components/BlobCursor";
 
 const asset = (path: string) => path.startsWith("/") ? `.${path}` : path;
 
@@ -154,6 +155,24 @@ export default function Home() {
 
   return (
     <main>
+      <BlobCursor
+        blobType="circle"
+        fillColor="#84CC16"
+        trailCount={2}
+        sizes={[67, 60]}
+        innerSizes={[24, 24]}
+        innerColor="rgba(255,255,255,0.8)"
+        opacities={[0.6, 0.6]}
+        shadowColor="rgba(0,0,0,0.75)"
+        shadowBlur={4}
+        shadowOffsetX={-44}
+        shadowOffsetY={8}
+        filterStdDeviation={30}
+        useFilter={true}
+        fastDuration={0.49}
+        slowDuration={0.5}
+        zIndex={100}
+      />
       <section className="hero" id="top">
         <video className="hero-video" autoPlay muted loop playsInline poster={asset("/zodiac-cover.png")}><source src={asset("/hero.mp4")} type="video/mp4" /></video>
         <div className="hero-shade" />
