@@ -32,15 +32,26 @@ const experiences = [
 ];
 
 const strengths = [
-  ["01","ART MANAGEMENT","美术管理：从标准到落地","制定 SOP 与生产流程，建设角色管线、组织与晋升体系，并完成最终美术品质审核。"],
-  ["02","PRODUCT THINKING","产品意识：为结果设计","具备多款 0–1 项目经验，以快速迭代、品质标杆、发行与商业化目标推动美术决策。"],
-  ["03","DESIGN CRAFT","设计能力：从概念到成品","覆盖风格孵化、角色原画、立绘与 KV，可从设计制作到 3D 还原进行全方位指导。"],
+  { no:"01", en:"ART MANAGEMENT", title:"美术管理：从标准到落地", desc:"制定 SOP 与生产流程，建设角色管线、组织与晋升体系，并完成最终美术品质审核。", slides:[
+    { page:"11", title:"体型分层与角色需求覆盖", image:"/strength-details/strength-01-01.png" },
+    { page:"12", title:"角色管线与制作规范", image:"/strength-details/strength-01-02.png" },
+    { page:"13", title:"原画、模型与 TA 品质闭环", image:"/strength-details/strength-01-03.png" },
+  ]},
+  { no:"02", en:"PRODUCT THINKING", title:"产品意识：为结果设计", desc:"具备多款 0–1 项目经验，以快速迭代、品质标杆、发行与商业化目标推动美术决策。", slides:[
+    { page:"08", title:"运营与商业化视觉", image:"/strength-details/strength-02-01.png" },
+    { page:"09", title:"AIGC 与 Demo 快速验证", image:"/strength-details/strength-02-02.png" },
+  ]},
+  { no:"03", en:"DESIGN CRAFT", title:"设计能力：从概念到成品", desc:"覆盖风格孵化、角色原画、立绘与 KV，可从设计制作到 3D 还原进行全方位指导。", slides:[
+    { page:"18", title:"从概念到成品的设计推导", image:"/strength-details/strength-03-01.png" },
+  ]},
 ];
 
 export default function Home() {
   const [filter, setFilter] = useState("全部");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [openProject, setOpenProject] = useState<string | null>(null);
+  const [openStrength, setOpenStrength] = useState<number | null>(null);
+  const [strengthPage, setStrengthPage] = useState(0);
   const tags = ["全部", "视频动画", "角色设计", "概念设计", "UI视觉", "场景设计", "宣传视觉", "制作管理"];
   const visibleWorks = useMemo(() => filter === "全部" ? portfolioWorks : portfolioWorks.filter((work) => work.tag === filter), [filter]);
   const workGroups = useMemo(() => {
@@ -57,6 +68,8 @@ export default function Home() {
   const activeWorks = openProject ? projectWorks : visibleWorks;
   const selectedIndex = activeWorks.findIndex((work) => work.id === selectedId);
   const selectedWork = selectedIndex >= 0 ? activeWorks[selectedIndex] : null;
+  const activeStrength = openStrength === null ? null : strengths[openStrength];
+  const activeStrengthSlide = activeStrength?.slides[strengthPage] ?? null;
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -118,20 +131,26 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!selectedWork && !openProject) return;
+    if (!selectedWork && !openProject && !activeStrength) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") selectedWork ? setSelectedId(null) : setOpenProject(null);
+      if (event.key === "Escape") {
+        if (selectedWork) setSelectedId(null);
+        else if (openProject) setOpenProject(null);
+        else setOpenStrength(null);
+      }
       if (selectedWork && event.key === "ArrowRight") setSelectedId(activeWorks[(selectedIndex + 1) % activeWorks.length].id);
       if (selectedWork && event.key === "ArrowLeft") setSelectedId(activeWorks[(selectedIndex - 1 + activeWorks.length) % activeWorks.length].id);
+      if (activeStrength && event.key === "ArrowRight") setStrengthPage((current) => (current + 1) % activeStrength.slides.length);
+      if (activeStrength && event.key === "ArrowLeft") setStrengthPage((current) => (current - 1 + activeStrength.slides.length) % activeStrength.slides.length);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [activeWorks, openProject, selectedIndex, selectedWork]);
+  }, [activeStrength, activeWorks, openProject, selectedIndex, selectedWork]);
 
   return (
     <main>
@@ -183,7 +202,7 @@ export default function Home() {
       <section className="strengths section shell" id="strengths">
         <div className="section-head" data-reveal><p>03 / CORE STRENGTHS</p><p>THINK · BUILD · DELIVER</p></div>
         <div className="title-row dark-title" data-reveal><h2>WHAT I<br /><span>BRING</span></h2><p>从审美判断到生产管理<br />把模糊的创意转化为可落地的产品语言</p></div>
-        <div className="strength-grid">{strengths.map(item => <article data-reveal data-tilt key={item[0]}><span>{item[0]}</span><p>{item[1]}</p><h3>{item[2]}</h3><div className="skill-mark">+</div><p className="skill-desc">{item[3]}</p></article>)}</div>
+        <div className="strength-grid">{strengths.map((item, index) => <button type="button" className="strength-card" data-reveal data-tilt key={item.no} onClick={() => { setOpenStrength(index); setStrengthPage(0); }} aria-label={`浏览 ${item.title} 相关内容`}><span>{item.no}</span><p>{item.en}</p><h3>{item.title}</h3><div className="skill-mark">↗</div><p className="skill-desc">{item.desc}</p><div className="strength-card-action"><span>VIEW CASES</span><b>{String(item.slides.length).padStart(2,"0")} PAGES</b></div></button>)}</div>
       </section>
 
       <section className="works section" id="works">
@@ -213,6 +232,12 @@ export default function Home() {
         <div className="lightbox-top"><div><span>{selectedWork.project}</span><strong>{selectedWork.title}</strong></div><button onClick={() => setSelectedId(null)} aria-label="关闭大图">CLOSE ×</button></div>
         <div className="lightbox-stage">{selectedWork.media === "video" ? <video src={asset(selectedWork.image)} controls autoPlay playsInline /> : <img src={asset(selectedWork.image)} alt={selectedWork.title} width={selectedWork.width} height={selectedWork.height} />}</div>
         <div className="lightbox-bottom"><button onClick={() => setSelectedId(activeWorks[(selectedIndex - 1 + activeWorks.length) % activeWorks.length].id)} aria-label="上一张">← PREV</button><span>{String(selectedIndex + 1).padStart(3, "0")} / {String(activeWorks.length).padStart(3, "0")} · {selectedWork.tag}</span><button onClick={() => setSelectedId(activeWorks[(selectedIndex + 1) % activeWorks.length].id)} aria-label="下一张">NEXT →</button></div>
+      </div>}
+
+      {activeStrength && activeStrengthSlide && <div className="strength-browser" role="dialog" aria-modal="true" aria-label={`${activeStrength.title} 内容浏览`} onMouseDown={(event) => { if (event.target === event.currentTarget) setOpenStrength(null); }}>
+        <header className="strength-browser-head"><div><span>CORE STRENGTH {activeStrength.no}</span><h2>{activeStrength.title}</h2><p>{activeStrength.en} · PPT {activeStrengthSlide.page}</p></div><button type="button" onClick={() => setOpenStrength(null)} aria-label="关闭核心优势内容">CLOSE ×</button></header>
+        <div className="strength-browser-stage"><img src={asset(activeStrengthSlide.image)} alt={`PPT 第 ${activeStrengthSlide.page} 页：${activeStrengthSlide.title}`} width="1920" height="1080" /></div>
+        <footer className="strength-browser-foot"><button type="button" onClick={() => setStrengthPage((current) => (current - 1 + activeStrength.slides.length) % activeStrength.slides.length)} disabled={activeStrength.slides.length === 1} aria-label="上一页">← PREV</button><div className="strength-browser-pages">{activeStrength.slides.map((slide, index) => <button type="button" className={index === strengthPage ? "active" : ""} onClick={() => setStrengthPage(index)} key={slide.page} aria-label={`查看 PPT 第 ${slide.page} 页`}><span>{slide.page}</span><b>{slide.title}</b></button>)}</div><button type="button" onClick={() => setStrengthPage((current) => (current + 1) % activeStrength.slides.length)} disabled={activeStrength.slides.length === 1} aria-label="下一页">NEXT →</button></footer>
       </div>}
 
       <footer className="contact" id="contact">
