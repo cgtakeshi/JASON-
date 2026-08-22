@@ -157,15 +157,15 @@ export default function Home() {
     <main>
       <BlobCursor
         blobType="circle"
-        fillColor="#84CC16"
+        fillColor="#9aff00"
         trailCount={2}
         sizes={[67, 60]}
         innerSizes={[24, 24]}
-        innerColor="rgba(255,255,255,0.8)"
+        innerColor="#ffffff"
         opacities={[0.6, 0.6]}
-        shadowColor="rgba(0,0,0,0.75)"
+        shadowColor="#ffdf7b"
         shadowBlur={4}
-        shadowOffsetX={-44}
+        shadowOffsetX={-50}
         shadowOffsetY={8}
         filterStdDeviation={30}
         useFilter={true}
