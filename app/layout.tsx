@@ -18,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const imageUrl = `${protocol}://${host}/og.png`;
-  const title = "张斌 · 游戏美术总监作品集";
-  const description = "张斌，拥有 17+ 年游戏美术、角色设计与团队管理经验的游戏美术总监。";
+  const title = "JASON·ZHANG · 游戏美术总监 / Game Art Director";
+  const description = "JASON ZHANG，拥有 17+ 年游戏美术、角色设计与团队管理经验的游戏美术总监。Bilingual portfolio of a Game Art Director with 17+ years of experience.";
 
   return {
     title,
