@@ -6,8 +6,8 @@ const CONFIG = {
   minProgress: 0.02,
   maxProgress: 0.98,
   centerProgress: 0.5,
-  smoothing: 0.08,
-  seekThreshold: 0.01,
+  smoothing: 0.12,
+  seekThreshold: 0.006,
 };
 
 type ScrubbedHeroVideoProps = {
@@ -28,7 +28,7 @@ export default function ScrubbedHeroVideo({ src, poster }: ScrubbedHeroVideoProp
     let targetProgress = CONFIG.centerProgress;
     let currentProgress = CONFIG.centerProgress;
     let lastAppliedProgress = -1;
-    let lastPointerX = window.innerWidth / 2;
+    let lastPointerY = window.innerHeight / 2;
     let pointerIsInside = false;
     let rafId: number | null = null;
 
@@ -63,16 +63,16 @@ export default function ScrubbedHeroVideo({ src, poster }: ScrubbedHeroVideoProp
     };
 
     const updateTargetFromPointer = () => {
-      const normalizedX = clamp(lastPointerX / Math.max(window.innerWidth, 1), 0, 1);
-      const reversedProgress = 1 - normalizedX;
-      targetProgress = CONFIG.minProgress + reversedProgress * (CONFIG.maxProgress - CONFIG.minProgress);
+      const normalizedY = clamp(lastPointerY / Math.max(window.innerHeight, 1), 0, 1);
+      targetProgress =
+        CONFIG.minProgress + normalizedY * (CONFIG.maxProgress - CONFIG.minProgress);
       startAnimation();
     };
 
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
       pointerIsInside = true;
-      lastPointerX = event.clientX;
+      lastPointerY = event.clientY;
       updateTargetFromPointer();
     };
 
