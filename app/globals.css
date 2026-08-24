@@ -186,3 +186,6 @@ body{font-family:var(--font-cjk);font-synthesis:none;text-rendering:optimizeLegi
 .strength-browser-pages button b{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:var(--font-cjk);font-size:10px;font-weight:500}
 .strength-browser-pages button.active{border-color:#caff3273;background:#caff3210;color:#f7f7f1}
 @media(max-width:720px){.strength-grid .strength-card{min-height:330px;padding:24px}.strength-card h3{margin-top:48px;font-size:27px}.strength-browser{padding:0 13px}.strength-browser-head{min-height:92px}.strength-browser-head>div{grid-template-columns:1fr;gap:6px}.strength-browser-head h2,.strength-browser-head p{grid-column:1}.strength-browser-head h2{max-width:230px;font-size:18px}.strength-browser-head>button{padding:10px 12px}.strength-browser-stage{padding:14px 0}.strength-browser-stage img{width:100%;max-height:calc(100svh - 220px);border-radius:10px}.strength-browser-foot{min-height:100px;grid-template-columns:56px minmax(0,1fr) 56px;gap:5px}.strength-browser-pages{justify-content:flex-start}.strength-browser-pages button{min-width:62px;display:block;padding:10px;text-align:center}.strength-browser-pages button b{display:none}.strength-browser-foot>button{font-size:8px}}
+
+/* Mouse-scrubbed hero film: visual only, never intercepts navigation or buttons. */
+.hero-video{pointer-events:none;object-position:center}

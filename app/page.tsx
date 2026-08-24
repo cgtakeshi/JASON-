@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import works from "./portfolio-manifest.json";
+import ScrubbedHeroVideo from "../components/ScrubbedHeroVideo";
 
 const asset = (path: string) => path.startsWith("/") ? `.${path}` : path;
 
@@ -155,7 +156,7 @@ export default function Home() {
   return (
     <main>
       <section className="hero" id="top">
-        <video className="hero-video" autoPlay muted loop playsInline poster={asset("/zodiac-cover.png")}><source src={asset("/hero.mp4")} type="video/mp4" /></video>
+        <ScrubbedHeroVideo src={asset("/hero-head-follow.mp4")} poster={asset("/zodiac-cover.png")} />
         <div className="hero-shade" />
         <header className="nav shell">
           <a className="brand" href="#top" aria-label="张斌个人作品集首页">BZ<span>.</span></a>
