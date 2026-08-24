@@ -6,8 +6,8 @@ const CONFIG = {
   minProgress: 0.02,
   maxProgress: 0.98,
   centerProgress: 0.5,
-  smoothing: 0.12,
-  seekThreshold: 0.006,
+  smoothing: 0.16,
+  seekThreshold: 0.004,
 };
 
 type ScrubbedHeroVideoProps = {
@@ -31,6 +31,7 @@ export default function ScrubbedHeroVideo({ src, poster }: ScrubbedHeroVideoProp
     let lastPointerY = window.innerHeight / 2;
     let pointerIsInside = false;
     let rafId: number | null = null;
+    let lastAnimationTime = performance.now();
 
     const applyProgress = (progress: number, force = false) => {
       if (!Number.isFinite(video.duration) || video.duration <= 0) return;
@@ -44,12 +45,15 @@ export default function ScrubbedHeroVideo({ src, poster }: ScrubbedHeroVideoProp
       rafId = null;
     };
 
-    const animate = () => {
+    const animate = (timestamp: number) => {
       rafId = null;
       if (document.hidden) return;
 
       const difference = targetProgress - currentProgress;
-      currentProgress += difference * CONFIG.smoothing;
+      const elapsedFrames = clamp((timestamp - lastAnimationTime) / (1000 / 60), 0.25, 3);
+      const frameAdjustedSmoothing = 1 - Math.pow(1 - CONFIG.smoothing, elapsedFrames);
+      currentProgress += difference * frameAdjustedSmoothing;
+      lastAnimationTime = timestamp;
 
       const settled = Math.abs(difference) < 0.0005;
       if (settled) currentProgress = targetProgress;
@@ -59,7 +63,10 @@ export default function ScrubbedHeroVideo({ src, poster }: ScrubbedHeroVideoProp
     };
 
     const startAnimation = () => {
-      if (rafId === null && !document.hidden) rafId = requestAnimationFrame(animate);
+      if (rafId === null && !document.hidden) {
+        lastAnimationTime = performance.now();
+        rafId = requestAnimationFrame(animate);
+      }
     };
 
     const updateTargetFromPointer = () => {
