@@ -164,8 +164,10 @@ export default function Home() {
           <a className="contact-link" href="#contact">联系我 <span>↗</span></a>
         </header>
         <div className="hero-content shell">
-          <p className="eyebrow"><span /> GAME ART DIRECTOR · PORTFOLIO</p>
-          <h1>张斌 <span>·</span> 游戏美术总监</h1>
+          <div className="hero-heading-row">
+            <h1>张斌 <span>·</span> 游戏美术总监</h1>
+            <p className="eyebrow"><span /> GAME ART DIRECTOR · PORTFOLIO</p>
+          </div>
           <div className="hero-bottom"><p>让美术为产品服务，让品质真正落地</p><div className="hero-metrics"><span><b>17+</b> 年行业经验</span><span><b>10+</b> 参与项目</span><span><b>7</b> 段职业经历</span></div><a href="#experience" className="scroll-cue"><span>↓</span> SCROLL TO EXPLORE</a></div>
         </div>
         <div className="hero-showcase" aria-label="精选项目快速预览"><div className="hero-showcase-track">{[...projects, ...projects].map((project, index) => <button key={`${project.no}-${index}`} onClick={() => setOpenProject(project.folder)}><img src={asset(projectCover(project))} alt="" /><span>{project.title}</span></button>)}</div></div>
