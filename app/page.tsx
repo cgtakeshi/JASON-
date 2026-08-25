@@ -55,6 +55,7 @@ export default function Home() {
   const [openProject, setOpenProject] = useState<string | null>(null);
   const [openStrength, setOpenStrength] = useState<number | null>(null);
   const [strengthPage, setStrengthPage] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const copy = COPY[locale];
   const isEnglish = locale === "en";
   const tags = ["全部", "视频动画", "角色设计", "概念设计", "UI视觉", "场景设计", "宣传视觉", "制作管理"];
@@ -79,6 +80,20 @@ export default function Home() {
   useEffect(() => {
     document.documentElement.lang = isEnglish ? "en" : "zh-CN";
   }, [isEnglish]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -169,8 +184,13 @@ export default function Home() {
         <header className="nav shell">
           <a className="brand" href="#top" aria-label={copy.homeLabel}>JZ<span>.</span></a>
           <nav aria-label={copy.navLabel}><a href="#experience">{copy.navExperience}</a><a href="#projects">{copy.navProjects}</a><a href="#strengths">{copy.navStrengths}</a><a href="#works">{copy.navWorks}</a></nav>
-          <div className="nav-actions"><div className="language-switch" role="group" aria-label={isEnglish ? "Choose language" : "选择语言"}><button type="button" className={!isEnglish ? "active" : ""} onClick={() => setLocale("zh")} aria-pressed={!isEnglish}>中</button><button type="button" className={isEnglish ? "active" : ""} onClick={() => setLocale("en")} aria-pressed={isEnglish}>EN</button></div><a className="contact-link" href="#contact">{copy.contact} <span>↗</span></a></div>
+          <div className="nav-actions"><div className="language-switch" role="group" aria-label={isEnglish ? "Choose language" : "选择语言"}><button type="button" className={!isEnglish ? "active" : ""} onClick={() => setLocale("zh")} aria-pressed={!isEnglish}>中</button><button type="button" className={isEnglish ? "active" : ""} onClick={() => setLocale("en")} aria-pressed={isEnglish}>EN</button></div><a className="contact-link" href="#contact">{copy.contact} <span>↗</span></a><button type="button" className={`mobile-menu-toggle ${mobileMenuOpen ? "active" : ""}`} onClick={() => setMobileMenuOpen((open) => !open)} aria-expanded={mobileMenuOpen} aria-controls="mobile-menu" aria-label={mobileMenuOpen ? copy.close : copy.navLabel}><span /><span /></button></div>
         </header>
+        {mobileMenuOpen && <div className="mobile-menu-panel active" id="mobile-menu">
+          <p>JASON<span>·</span>ZHANG</p>
+          <nav aria-label={copy.navLabel}><a href="#top" onClick={() => setMobileMenuOpen(false)}>01 / {isEnglish ? "Home" : "首页"}</a><a href="#experience" onClick={() => setMobileMenuOpen(false)}>02 / {copy.navExperience}</a><a href="#projects" onClick={() => setMobileMenuOpen(false)}>03 / {copy.navProjects}</a><a href="#strengths" onClick={() => setMobileMenuOpen(false)}>04 / {copy.navStrengths}</a><a href="#works" onClick={() => setMobileMenuOpen(false)}>05 / {copy.navWorks}</a><a href="#contact" onClick={() => setMobileMenuOpen(false)}>06 / {copy.contact}</a></nav>
+          <div className="mobile-menu-foot"><div className="language-switch" role="group" aria-label={isEnglish ? "Choose language" : "选择语言"}><button type="button" className={!isEnglish ? "active" : ""} onClick={() => setLocale("zh")} aria-pressed={!isEnglish}>中文</button><button type="button" className={isEnglish ? "active" : ""} onClick={() => setLocale("en")} aria-pressed={isEnglish}>ENGLISH</button></div><span>SHENZHEN · 2026</span></div>
+        </div>}
         <div className="hero-content shell">
           <div className="hero-heading-row">
             <h1>JASON<span>·</span>ZHANG</h1>
