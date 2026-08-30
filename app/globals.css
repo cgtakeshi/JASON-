@@ -115,7 +115,7 @@
 
 /* Resume information from the supplied portfolio deck */
 .timeline-row{grid-template-columns:120px 56px minmax(240px,.72fr) 1.5fr}
-.timeline-no{line-height:1.5;color:var(--lime)}
+.timeline-no{color:var(--lime);font-family:var(--font-latin);font-size:14px;font-weight:650;line-height:1.35;letter-spacing:.025em;font-variant-numeric:tabular-nums;white-space:nowrap}
 .timeline-row>img,.company-mark{width:50px;height:50px}
 .company-mark{display:grid;place-items:center;border:1px solid var(--glass-line);border-radius:12px;background:#ffffff0a;color:#d7d8d2;font:700 13px/1 monospace;letter-spacing:.08em}
 .strength-grid{grid-template-columns:repeat(3,1fr);grid-template-rows:minmax(360px,auto)}
@@ -217,7 +217,7 @@ body{font-family:var(--font-cjk);font-synthesis:none;text-rendering:optimizeLegi
   #experience .timeline::before{content:"";position:absolute;left:5px;top:16px;bottom:16px;width:1px;background:linear-gradient(180deg,var(--lime),#ffffff22 18%,#ffffff22 82%,var(--lime))}
   #experience .timeline-row{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr);grid-template-rows:auto auto auto;flex:none;gap:2px 9px;min-height:72px;padding:9px 0 9px 11px;border:0;border-bottom:1px solid #ffffff0d;border-radius:0;background:transparent;box-shadow:none;scroll-snap-align:none}
   #experience .timeline-row::before{content:"";position:absolute;left:-16px;top:20px;width:7px;height:7px;border:1px solid #050505;border-radius:50%;background:var(--lime);box-shadow:0 0 0 3px #caff3220}
-  #experience .timeline-no{grid-column:2;grid-row:1;color:#777a74;font-size:7px;letter-spacing:.09em}
+  #experience .timeline-no{grid-column:2;grid-row:1;color:#b8df52;font-family:var(--font-latin);font-size:11px;font-weight:650;line-height:1.3;letter-spacing:.025em;font-variant-numeric:tabular-nums;white-space:nowrap}
   #experience .timeline-row>img,#experience .timeline-row>.company-mark{grid-column:1;grid-row:1/4;width:30px;height:30px;margin-top:8px;border-radius:7px}
   #experience .timeline-row>div:first-of-type{grid-column:2;grid-row:2;min-width:0}
   #experience .timeline-row>div:last-child{grid-column:2;grid-row:3;min-width:0;padding:0}
