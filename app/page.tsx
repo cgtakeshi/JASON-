@@ -45,8 +45,8 @@ const experiences = [
   { period:"2008.12 — 2010.12", companyZh:"沈阳瀚唐", companyEn:"Shenyang Hantang", logo:null, mark:"HT", roleZh:"3D 模型师", roleEn:"3D Artist", projectZh:"哈派乐园", projectEn:"Happy Paradise", descZh:"负责角色、道具和场景模型，后期兼任原画、灯光渲染与动作捕捉调优，建立跨流程制作基础。", descEn:"Produced character, prop and environment models, later contributing concept art, lighting, rendering and motion-capture refinement to establish a broad cross-pipeline foundation." },
 ];
 
-const experienceVideos: Record<string, string> = {
-  "奕兆科技": "eJ7gu9CmpXk",
+const experienceLinks: Record<string, string> = {
+  "奕兆科技": "https://play.google.com/store/apps/details?id=com.whoot.games.zh&hl=es_419",
 };
 
 const strengths = [
@@ -72,7 +72,6 @@ export default function Home() {
   const [openStrength, setOpenStrength] = useState<number | null>(null);
   const [strengthPage, setStrengthPage] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [experienceVideoId, setExperienceVideoId] = useState<string | null>(null);
   const copy = COPY[locale];
   const isEnglish = locale === "en";
   const tags = ["全部", "视频动画", "角色设计", "概念设计", "UI视觉", "场景设计", "宣传视觉", "制作管理"];
@@ -172,13 +171,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!selectedWork && !openProject && !activeStrength && !experienceVideoId) return;
+    if (!selectedWork && !openProject && !activeStrength) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        if (experienceVideoId) setExperienceVideoId(null);
-        else if (selectedWork) setSelectedId(null);
+        if (selectedWork) setSelectedId(null);
         else if (openProject) setOpenProject(null);
         else setOpenStrength(null);
       }
@@ -192,7 +190,7 @@ export default function Home() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [activeStrength, activeWorks, experienceVideoId, openProject, selectedIndex, selectedWork]);
+  }, [activeStrength, activeWorks, openProject, selectedIndex, selectedWork]);
 
   return (
     <main>
@@ -235,17 +233,10 @@ export default function Home() {
         <div className="timeline">
           {experiences.map((item) => <article className="timeline-row" data-reveal data-tilt key={item.companyZh}>
             <span className="timeline-no">{item.period}</span>{item.logo ? <img src={asset(item.logo)} alt={`${isEnglish ? item.companyEn : item.companyZh} logo`} /> : <span className="company-mark" aria-hidden="true">{item.mark}</span>}
-            <div><h3>{isEnglish ? item.companyEn : item.companyZh}</h3><div className="timeline-project"><p>{isEnglish ? item.projectEn : item.projectZh}</p>{experienceVideos[item.companyZh] && <button type="button" className="timeline-video-button" onClick={() => setExperienceVideoId(experienceVideos[item.companyZh])} aria-label={isEnglish ? "Play ZODIAC HEROES video" : "播放 ZODIAC HEROES 视频"}><span aria-hidden="true">↗</span></button>}</div></div><div><strong>{isEnglish ? item.roleEn : item.roleZh}</strong><p>{isEnglish ? item.descEn : item.descZh}</p></div>
+            <div><h3>{isEnglish ? item.companyEn : item.companyZh}</h3><div className="timeline-project"><p>{isEnglish ? item.projectEn : item.projectZh}</p>{experienceLinks[item.companyZh] && <a className="timeline-store-link" href={experienceLinks[item.companyZh]} target="_blank" rel="noreferrer" aria-label={isEnglish ? "Open ZODIAC HEROES on Google Play" : "在 Google Play 查看 ZODIAC HEROES"}><span aria-hidden="true">↗</span></a>}</div></div><div><strong>{isEnglish ? item.roleEn : item.roleZh}</strong><p>{isEnglish ? item.descEn : item.descZh}</p></div>
           </article>)}
         </div>
       </section>
-
-      {experienceVideoId && <div className="experience-video-modal" role="dialog" aria-modal="true" aria-label={isEnglish ? "ZODIAC HEROES video" : "ZODIAC HEROES 项目视频"} onMouseDown={(event) => { if (event.target === event.currentTarget) setExperienceVideoId(null); }}>
-        <div className="experience-video-panel">
-          <header><div><span>PROJECT VIDEO</span><strong>ZODIAC HEROES</strong></div><button type="button" onClick={() => setExperienceVideoId(null)} aria-label={isEnglish ? "Close video" : "关闭视频"}>{isEnglish ? "CLOSE" : "关闭"} ×</button></header>
-          <div className="experience-video-frame"><iframe src={`https://www.youtube-nocookie.com/embed/${experienceVideoId}?autoplay=1&rel=0&modestbranding=1`} title="ZODIAC HEROES" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
-        </div>
-      </div>}
 
       <section className="projects section" id="projects">
         <div className="shell"><div className="section-head light" data-reveal><p>02 / SELECTED PROJECTS</p><p>2010s — {isEnglish ? "NOW" : "至今"}</p></div><div className="title-row" data-reveal><h2>PROJECT<br /><span>ARCHIVE</span></h2><p>{copy.projectSectionCopy.split("\n").map((line, index) => <span key={line}>{index > 0 && <br />}{line}</span>)}</p></div>
