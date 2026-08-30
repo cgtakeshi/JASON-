@@ -5,7 +5,19 @@ import works from "./portfolio-manifest.json";
 import ScrubbedHeroVideo from "../components/ScrubbedHeroVideo";
 import { COPY, interpolate, projectLabel, tagLabel, workTitle, type Locale } from "./portfolio-i18n";
 
-const asset = (path: string) => path.startsWith("/") ? `.${path}` : path;
+type PortfolioRuntimeConfig = {
+  assetBase?: string;
+};
+
+const asset = (path: string) => {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const runtimeConfig = typeof window === "undefined"
+    ? undefined
+    : (window as Window & { __PORTFOLIO_CONFIG__?: PortfolioRuntimeConfig }).__PORTFOLIO_CONFIG__;
+  const assetBase = runtimeConfig?.assetBase?.replace(/\/$/, "");
+
+  return assetBase ? `${assetBase}${normalizedPath}` : `.${normalizedPath}`;
+};
 
 const projects = [
   { no:"01", subtitleZh:"十二星座英雄", subtitleEn:"MATCH-3 RPG", type:"ART DIRECTION / UI / CHARACTER", image:"/zodiac-cover.png", folder:"Zodiac Heroes" },
@@ -26,9 +38,9 @@ const portfolioWorks = works.filter((work) => !work.cover);
 const experiences = [
   { period:"2025.02 — NOW", companyZh:"奕兆科技", companyEn:"Yizhao Technology", logo:"/logo-yizhao.png", mark:"YZ", roleZh:"美术总监", roleEn:"Art Director", projectZh:"ZODIAC HEROES · 欧美卡通三消", projectEn:"ZODIAC HEROES · Western Cartoon Match-3", descZh:"负责部门重建与 AI 赋能，制定 SOP、统一生产流程与交付标准，重构美术组织并承担最终品质审核。产品次留与转化数据提升 7 倍，超过竞品平均值。", descEn:"Rebuilt the art department and introduced AI-enabled workflows; established SOPs, unified production and delivery standards, reshaped the team structure and owned final quality approval. Improved day-two retention and conversion metrics sevenfold, surpassing competitor averages." },
   { period:"2020.09 — 2024.10", companyZh:"冰川网络", companyEn:"Glacier Network", logo:"/logo-bingchuan.png", mark:"BC", roleZh:"角色接口人 / 资深角色原画 / 美术中心原画主管", roleEn:"Character Art Owner / Senior Concept Artist / Concept Art Lead", projectZh:"悠星大陆 · 大世界开放世界", projectEn:"Astral Continent · Open-World Production", descZh:"参与前期美术风格孵化与方向定义，建立角色设计、制作规范和通用体型管线；负责核心角色原画、CP 资源对接与美术中台管理。", descEn:"Contributed to early visual style incubation and direction. Built character design standards, production specifications and a reusable body-type pipeline; led key character concepts, external partner coordination and central art-team management." },
-  { period:"2017.09 — 2020.09", companyZh:"淘乐网络", companyEn:"Taole Network", logo:"/logo-taole.png", mark:"TL", roleZh:"主美 / 代号 S 项目主设计", roleEn:"Lead Artist / Project S Lead Designer", projectZh:"桃花源记 · 少年仙侠传", projectEn:"Tales of Peach Blossom · Young Immortal", descZh:"主导国风 Q 版回合制项目的美术风格孵化、设计与制作标准、项目目标及计划，并搭建美术中台与职级晋升体系。", descEn:"Led visual style development for stylized Chinese turn-based games, defining design and production standards, project goals and schedules while building a shared art platform and career progression system." },
+  { period:"2017.09 — 2020.04", companyZh:"淘乐网络", companyEn:"Taole Network", logo:"/logo-taole.png", mark:"TL", roleZh:"主美 / 代号 S 项目主设计", roleEn:"Lead Artist / Project S Lead Designer", projectZh:"桃花源记 · 少年仙侠传", projectEn:"Tales of Peach Blossom · Young Immortal", descZh:"主导国风 Q 版回合制项目的美术风格孵化、设计与制作标准、项目目标及计划，并搭建美术中台与职级晋升体系。", descEn:"Led visual style development for stylized Chinese turn-based games, defining design and production standards, project goals and schedules while building a shared art platform and career progression system." },
   { period:"2014.09 — 2017.09", companyZh:"网易签约画师 / 个人工作室", companyEn:"NetEase Contract Artist / Independent Studio", logo:"/logo-netease.png", mark:"NE", roleZh:"签约画师 / 个人工作室负责人", roleEn:"Contract Artist / Studio Director", projectZh:"大话西游 · 梦幻西游 · 决战平安京 · 幻书启示录等 10+ 项目", projectEn:"Westward Journey · Fantasy Westward Journey · Onmyoji Arena · Revelation of Genesis and 10+ projects", descZh:"负责角色原画、立绘与 KV，并指导三视图、拆分、修图和图标制作，覆盖国风、和风与二次元题材。", descEn:"Created character concepts, key illustrations and key visuals, while directing turnarounds, asset breakdowns, retouching and icon production across Chinese fantasy, Japanese-inspired and anime styles." },
-  { period:"2013.09 — 2014.09", companyZh:"深圳墨麟", companyEn:"Shenzhen Molin", logo:null, mark:"ML", roleZh:"角色主管 / 项目中后期主美术", roleEn:"Character Lead / Mid-to-Late Production Art Lead", projectZh:"热血屠龙 · 风云无双 WEB · 古剑 WEB", projectEn:"Dragon Slayer · Storm Warriors Web · Ancient Sword Web", descZh:"负责套装、坐骑、武器与翅膀等核心设计，并参与多个写实、3 渲 2 页游项目的角色美术管理。", descEn:"Owned core designs for outfits, mounts, weapons and wings, and managed character art across multiple realistic and 3D-to-2D web-game productions." },
+  { period:"2013.11 — 2014.08", companyZh:"深圳墨麟", companyEn:"Shenzhen Molin", logo:null, mark:"ML", roleZh:"角色主管 / 项目中后期主美术", roleEn:"Character Lead / Mid-to-Late Production Art Lead", projectZh:"热血屠龙 · 风云无双 WEB · 古剑 WEB", projectEn:"Dragon Slayer · Storm Warriors Web · Ancient Sword Web", descZh:"负责套装、坐骑、武器与翅膀等核心设计，并参与多个写实、3 渲 2 页游项目的角色美术管理。", descEn:"Owned core designs for outfits, mounts, weapons and wings, and managed character art across multiple realistic and 3D-to-2D web-game productions." },
   { period:"2011.05 — 2013.09", companyZh:"北京呈天游 T4GAME", companyEn:"Beijing T4GAME", logo:null, mark:"T4", roleZh:"原画设计 / 组长", roleEn:"Concept Artist / Team Lead", projectZh:"神游记 · 诛神 OL", projectEn:"Divine Journey · Godslayer Online", descZh:"负责主角套装、时装、坐骑与武器设计，在写实仙侠与卡通 3 渲 2 项目中完成从设计到团队协作的积累。", descEn:"Designed protagonist sets, costumes, mounts and weapons, building end-to-end design and team collaboration experience across realistic Chinese fantasy and stylized 3D-to-2D projects." },
   { period:"2008.12 — 2010.12", companyZh:"沈阳瀚唐", companyEn:"Shenyang Hantang", logo:null, mark:"HT", roleZh:"3D 模型师", roleEn:"3D Artist", projectZh:"哈派乐园", projectEn:"Happy Paradise", descZh:"负责角色、道具和场景模型，后期兼任原画、灯光渲染与动作捕捉调优，建立跨流程制作基础。", descEn:"Produced character, prop and environment models, later contributing concept art, lighting, rendering and motion-capture refinement to establish a broad cross-pipeline foundation." },
 ];
