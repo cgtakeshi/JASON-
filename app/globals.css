@@ -61,6 +61,9 @@
   filter:none!important;
   background:#0d0e0c;
 }
+
+/* Shared high-visibility close treatment for every content modal. */
+.modal-close-button{border:1px solid #75bb28!important;border-radius:999px!important;background:#5f9f16!important;color:#fff!important;padding:11px 16px!important;box-shadow:0 8px 28px #5f9f1638!important;font-family:var(--font-latin)!important;font-size:9px!important;font-weight:750!important;line-height:1!important;letter-spacing:.1em!important;transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)!important}.modal-close-button:hover,.modal-close-button:focus-visible{background:#74ba20!important;color:#fff!important;transform:translateY(-2px);box-shadow:0 10px 34px #74ba2052!important;outline:2px solid #ffffffb8!important;outline-offset:2px}
 .projects .project-card:hover>img,
 .projects .project-card:focus-visible>img{
   transform:none!important;

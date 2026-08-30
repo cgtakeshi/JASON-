@@ -134,7 +134,7 @@ export const PROJECT_LABELS: Record<string, Record<Locale, string>> = {
   大话西游端游: { zh: "大话西游端游", en: "WESTWARD JOURNEY ONLINE" },
   幻书启示录: { zh: "幻书启示录", en: "REVELATION OF GENESIS" },
   "轩辕剑·龙舞云山": { zh: "轩辕剑·龙舞云山", en: "XUANYUAN SWORD: DRAGON DANCES AMONG CLOUDS" },
-  "桃花源记 & 少年仙侠传": { zh: "桃花源记 & 少年仙侠传", en: "TALES OF PEACH BLOSSOM & YOUNG IMMORTAL" },
+  "桃花源记 & 少年仙界传": { zh: "桃花源记 & 少年仙界传", en: "TALES OF PEACH BLOSSOM & YOUNG IMMORTAL REALM" },
   其他作品: { zh: "其他作品", en: "OTHER WORKS" },
 };
 
@@ -205,8 +205,8 @@ const WORK_TITLE_EN: Record<string, string> = {
   双子座UP池完整版动画: "Gemini Featured Summon — Full Animation",
   "陶乐-立绘1": "Taole Character Illustration — 1",
   "陶乐-立绘2": "Taole Character Illustration — 2",
-  "淘乐-少年仙侠传-图标插图标杆绘制_new": "Young Immortal — Icon Illustration Benchmark",
-  "淘乐-少年仙侠传-主角设计_new": "Young Immortal — Protagonist Design",
+  "淘乐-少年仙界传-图标插图标杆绘制_new": "Young Immortal Realm — Icon Illustration Benchmark",
+  "淘乐-少年仙界传-主角设计_new": "Young Immortal Realm — Protagonist Design",
   "淘乐-桃手-x丘比特": "Taole Peach Hand × Cupid",
   天蝎座三视图2: "Scorpio Turnaround — 2",
   通用道具图标: "Shared Item Icons",
