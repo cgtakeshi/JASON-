@@ -1,0 +1,8 @@
+[Unit]
+Description=Enable the www.jasongame.com TLS certificate after DNS propagation
+After=network-online.target nginx.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/jason-enable-www-cert

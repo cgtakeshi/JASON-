@@ -1,0 +1,10 @@
+[Unit]
+Description=Retry www.jasongame.com TLS setup until DNS is ready
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
