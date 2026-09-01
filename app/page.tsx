@@ -292,8 +292,25 @@ export default function Home() {
 
       <footer className="contact" id="contact">
         <div className="contact-orbit" aria-hidden="true" />
-        <div className="shell contact-inner" data-reveal><p className="eyebrow"><span /> {copy.available}</p><h2>{copy.contactHeadline}<br /><em>{copy.contactHeadlineAccent}</em> {copy.contactHeadlineEnd}<span>.</span></h2>
-          <div className="contact-bottom"><div><p>{copy.contactCopy}</p><div className="contact-details"><span>{copy.city}</span><a href="tel:+8618600805208">186 0080 5208</a><a href="mailto:860404@qq.com">860404@qq.com</a></div></div><a className="back-top" href="#top" aria-label={copy.backTop}>↑</a></div>
+        <div className="shell contact-inner" data-reveal>
+          <p className="eyebrow contact-kicker"><span /> {copy.available}</p>
+          <h2 className={`contact-headline ${isEnglish ? "is-en" : "is-zh"}`}>
+            <span className="contact-headline-first">{copy.contactHeadline}</span>
+            <span className="contact-headline-second"><em>{copy.contactHeadlineAccent}</em> <b>{copy.contactHeadlineEnd}</b><i>.</i></span>
+          </h2>
+          <div className="contact-bottom">
+            <div className="contact-copy-wrap">
+              <p>{copy.contactCopy}</p>
+              <span className="contact-city">{copy.city} · CHINA</span>
+              <div className="contact-details">
+                <a className="contact-item" href="tel:+8618600805208"><span className="contact-item-icon contact-item-letter" aria-hidden="true">T</span><span><small>{copy.phone}</small><strong>186 0080 5208</strong></span></a>
+                <a className="contact-item" href="mailto:860404@qq.com"><span className="contact-item-icon contact-item-letter" aria-hidden="true">@</span><span><small>{copy.email}</small><strong>860404@qq.com</strong></span></a>
+                <div className="contact-item"><span className="contact-item-icon wechat-icon" aria-hidden="true"><i /><i /></span><span><small>{copy.wechat}</small><strong>860404</strong></span></div>
+                <div className="contact-item"><span className="contact-item-icon qq-icon" aria-hidden="true"><i>Q</i><i>Q</i></span><span><small>{copy.qq}</small><strong>860404</strong></span></div>
+              </div>
+            </div>
+            <a className="back-top" href="#top" aria-label={copy.backTop}>↑</a>
+          </div>
         </div>
         <div className="footer-line shell"><span>© 2026 JASON ZHANG</span><a className="icp-link" href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">粤ICP备2026127526号</a><span>{copy.heroBadge}</span></div>
       </footer>
