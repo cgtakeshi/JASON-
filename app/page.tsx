@@ -295,7 +295,7 @@ export default function Home() {
         <div className="shell contact-inner" data-reveal><p className="eyebrow"><span /> {copy.available}</p><h2>{copy.contactHeadline}<br /><em>{copy.contactHeadlineAccent}</em> {copy.contactHeadlineEnd}<span>.</span></h2>
           <div className="contact-bottom"><div><p>{copy.contactCopy}</p><div className="contact-details"><span>{copy.city}</span><a href="tel:+8618600805208">186 0080 5208</a><a href="mailto:860404@qq.com">860404@qq.com</a></div></div><a className="back-top" href="#top" aria-label={copy.backTop}>↑</a></div>
         </div>
-        <div className="footer-line shell"><span>© 2026 JASON ZHANG</span><span>{copy.heroBadge}</span></div>
+        <div className="footer-line shell"><span>© 2026 JASON ZHANG</span><a className="icp-link" href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">粤ICP备2026127526号</a><span>{copy.heroBadge}</span></div>
       </footer>
     </main>
   );

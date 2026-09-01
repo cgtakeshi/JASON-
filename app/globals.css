@@ -128,6 +128,8 @@
 .contact-details span,.contact-bottom .contact-details a{width:auto;height:auto;padding:0;border:0;border-radius:0;background:transparent;color:#a7aaa3;font:11px/1.4 monospace;letter-spacing:.08em}
 .contact-bottom .contact-details a:hover{background:transparent;color:var(--lime)}
 .contact-bottom .back-top{width:62px;height:62px}
+.footer-line .icp-link{color:inherit;text-decoration:none;transition:color .2s ease}
+.footer-line .icp-link:hover{color:var(--lime)}
 @media(max-width:980px){.timeline-row{grid-template-columns:105px 54px 1fr}.timeline-row>div:last-child{grid-column:3}.strength-grid{grid-template-columns:1fr;grid-template-rows:auto}.strength-grid article:nth-child(n){grid-column:auto;grid-row:auto}}
 @media(max-width:720px){.timeline-row{grid-template-columns:1fr 44px minmax(0,1fr)}.timeline-no{grid-column:1/-1}.timeline-row>div:last-child{grid-column:2/-1;padding-left:0}.company-mark{width:38px;height:38px}.contact-details{display:grid;gap:8px}}
 @media(max-width:720px){.timeline-store-link{flex-basis:22px;width:22px;height:22px;font-size:10px}}
