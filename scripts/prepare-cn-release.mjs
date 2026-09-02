@@ -20,7 +20,7 @@ await mkdir(ossDir, { recursive: true });
 await cp(path.join(stageDir, "index.html"), path.join(wwwDir, "index.html"));
 await cp(path.join(stageDir, "assets"), path.join(wwwDir, "assets"), { recursive: true });
 
-const runtimeConfig = `window.__PORTFOLIO_CONFIG__ = {\n  assetBase: "/media",\n};\n`;
+const runtimeConfig = `window.__PORTFOLIO_CONFIG__ = {\n  assetBase: "https://static.jasongame.com/oss",\n};\n`;
 await writeFile(path.join(wwwDir, "site-config.js"), runtimeConfig, "utf8");
 
 const excludedRootEntries = new Set(["index.html", "assets", "site-config.js", "_headers", "_redirects"]);
@@ -78,7 +78,7 @@ const releaseInfo = {
   },
   portfolioItems: manifest.filter((item) => !item.cover).length,
   portfolioVideos: manifest.filter((item) => !item.cover && item.media === "video").length,
-  assetBase: "/media",
+  assetBase: "https://static.jasongame.com/oss",
 };
 await writeFile(path.join(releaseDir, "release-info.json"), `${JSON.stringify(releaseInfo, null, 2)}\n`, "utf8");
 await cp(path.join(projectRoot, "deploy", "cn-release-guide.md"), path.join(releaseDir, "README-国内部署说明.md"));
