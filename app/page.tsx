@@ -303,10 +303,10 @@ export default function Home() {
               <p>{copy.contactCopy}</p>
               <span className="contact-city">{copy.city} · CHINA</span>
               <div className="contact-details">
-                <a className="contact-item" href="tel:+8618600805208"><span className="contact-item-icon contact-item-letter" aria-hidden="true">T</span><span><small>{copy.phone}</small><strong>186 0080 5208</strong></span></a>
-                <a className="contact-item" href="mailto:860404@qq.com"><span className="contact-item-icon contact-item-letter" aria-hidden="true">@</span><span><small>{copy.email}</small><strong>860404@qq.com</strong></span></a>
-                <div className="contact-item"><span className="contact-item-icon wechat-icon" aria-hidden="true"><i /><i /></span><span><small>{copy.wechat}</small><strong>860404</strong></span></div>
-                <div className="contact-item"><span className="contact-item-icon qq-icon" aria-hidden="true"><i>Q</i><i>Q</i></span><span><small>{copy.qq}</small><strong>860404</strong></span></div>
+                <a className="contact-item" href="tel:+8618600805208"><span className="contact-item-icon" aria-hidden="true"><img src={asset("/icons/contact-phone.png")} alt="" width="32" height="32" /></span><span><small>{copy.phone}</small><strong>186 0080 5208</strong></span></a>
+                <a className="contact-item" href="mailto:860404@qq.com"><span className="contact-item-icon" aria-hidden="true"><img src={asset("/icons/contact-email.png")} alt="" width="32" height="32" /></span><span><small>{copy.email}</small><strong>860404@qq.com</strong></span></a>
+                <div className="contact-item"><span className="contact-item-icon" aria-hidden="true"><img src={asset("/icons/contact-wechat.png")} alt="" width="32" height="32" /></span><span><small>{copy.wechat}</small><strong>860404</strong></span></div>
+                <div className="contact-item"><span className="contact-item-icon" aria-hidden="true"><img src={asset("/icons/contact-qq.png")} alt="" width="32" height="32" /></span><span><small>{copy.qq}</small><strong>860404</strong></span></div>
               </div>
             </div>
             <a className="back-top" href="#top" aria-label={copy.backTop}>↑</a>

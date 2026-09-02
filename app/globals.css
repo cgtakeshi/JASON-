@@ -236,9 +236,7 @@ body{font-family:var(--font-cjk);font-synthesis:none;text-rendering:optimizeLegi
 .contact .contact-item,.contact-bottom .contact-details .contact-item{display:flex;width:auto;height:auto;min-width:0;align-items:center;gap:12px;padding:13px 14px;border:1px solid #ffffff16;border-radius:14px;background:#ffffff07;color:#d5d7d0;text-decoration:none;transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
 .contact a.contact-item:hover,.contact a.contact-item:focus-visible{border-color:#caff326b;background:#caff320c;color:#f6f8f1;transform:translateY(-2px);outline:0}
 .contact-item-icon{display:grid;flex:0 0 34px;width:34px;height:34px;place-items:center;border-radius:10px;background:var(--lime);color:#070807}
-.contact-item-letter{font:750 14px/1 var(--font-latin)}
-.wechat-icon{position:relative}.wechat-icon i{position:absolute;width:17px;height:13px;border:2px solid currentColor;border-radius:50%}.wechat-icon i:first-child{left:6px;top:7px}.wechat-icon i:last-child{right:5px;bottom:6px;width:14px;height:11px;background:var(--lime)}.wechat-icon i:after{content:"";position:absolute;right:0;bottom:-3px;width:5px;height:5px;border-right:2px solid currentColor;transform:rotate(26deg)}
-.qq-icon{display:flex;gap:0;color:#070807;font:800 11px/1 var(--font-latin);letter-spacing:-.16em}.qq-icon i{font-style:normal}
+.contact-item-icon img{display:block;width:22px;height:22px;object-fit:contain}
 .contact-item>span:last-child{display:grid;min-width:0;gap:4px}
 .contact-item small{color:#747770;font:700 8px/1 var(--font-cjk);letter-spacing:.11em;text-transform:uppercase}
 .contact-item strong{overflow:hidden;color:#e8e9e3;font:600 11px/1.25 var(--font-latin);letter-spacing:.025em;text-overflow:ellipsis;white-space:nowrap}
