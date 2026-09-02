@@ -1,4 +1,4 @@
-import PortfolioAdmin from "../../components/PortfolioAdmin";
+import PortfolioAdmin from "../../components/PortfolioAdminEcs";
 
 export const metadata = {
   title: "作品集内容后台 · JASON ZHANG",

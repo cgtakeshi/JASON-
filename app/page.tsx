@@ -3,14 +3,15 @@
 import { useEffect, useMemo, useState } from "react";
 import worksManifest from "./portfolio-manifest.json";
 import ScrubbedHeroVideo from "../components/ScrubbedHeroVideo";
-import type { PortfolioWork } from "../components/PortfolioAdmin";
+import type { PortfolioWork } from "../components/portfolio-types";
 import { COPY, interpolate, projectLabel, tagLabel, workTitle, type Locale } from "./portfolio-i18n";
 
 type PortfolioRuntimeConfig = {
   assetBase?: string;
+  contentApi?: string;
 };
 
-const works = worksManifest as PortfolioWork[];
+const staticWorks = worksManifest as PortfolioWork[];
 
 const asset = (path: string) => {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
@@ -33,10 +34,8 @@ const projects = [
   { no:"08", subtitleZh:"国风回合制 RPG", subtitleEn:"CHINESE FANTASY RPG", type:"ART DIRECTION / CHARACTER", image:"/cover-taole.png", folder:"桃花源记 & 少年仙界传" },
 ];
 
-const projectCover = (project: (typeof projects)[number]) =>
-  works.find((work) => work.project === project.folder && work.cover && !work.hidden)?.image ?? project.image;
-
-const portfolioWorks = works.filter((work) => !work.cover && !work.hidden);
+const projectCover = (project: (typeof projects)[number], sourceWorks: PortfolioWork[]) =>
+  sourceWorks.find((work) => work.project === project.folder && work.cover && !work.hidden)?.image ?? project.image;
 
 const experiences = [
   { period:"2025.02 — NOW", companyZh:"奕兆科技", companyEn:"Yizhao Technology", logo:"/logo-yizhao.png", mark:"YZ", roleZh:"美术总监", roleEn:"Art Director", projectZh:"ZODIAC HEROES · 欧美卡通三消", projectEn:"ZODIAC HEROES · Western Cartoon Match-3", descZh:"负责部门重建与 AI 赋能，制定 SOP、统一生产流程与交付标准，重构美术组织并承担最终品质审核。产品次留与转化数据提升 7 倍，超过竞品平均值。", descEn:"Rebuilt the art department and introduced AI-enabled workflows; established SOPs, unified production and delivery standards, reshaped the team structure and owned final quality approval. Improved day-two retention and conversion metrics sevenfold, surpassing competitor averages." },
@@ -71,6 +70,7 @@ const strengths = [
 ];
 
 export default function Home() {
+  const [runtimeWorks, setRuntimeWorks] = useState<PortfolioWork[]>(staticWorks);
   const [locale, setLocale] = useState<Locale>("zh");
   const [filter, setFilter] = useState("全部");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -81,7 +81,8 @@ export default function Home() {
   const copy = COPY[locale];
   const isEnglish = locale === "en";
   const tags = ["全部", "视频动画", "角色设计", "概念设计", "UI视觉", "场景设计", "宣传视觉", "制作管理"];
-  const visibleWorks = useMemo(() => filter === "全部" ? portfolioWorks : portfolioWorks.filter((work) => work.tag === filter), [filter]);
+  const portfolioWorks = useMemo(() => runtimeWorks.filter((work) => !work.cover && !work.hidden), [runtimeWorks]);
+  const visibleWorks = useMemo(() => filter === "全部" ? portfolioWorks : portfolioWorks.filter((work) => work.tag === filter), [filter, portfolioWorks]);
   const workGroups = useMemo(() => {
     const knownProjects = new Set(projects.map((project) => project.folder));
     const groups = projects.map((project) => ({
@@ -92,12 +93,23 @@ export default function Home() {
     const extras = visibleWorks.filter((work) => !knownProjects.has(work.project));
     return extras.length ? [...groups, { title: copy.otherWorks, folder: "其他作品", items: extras }] : groups;
   }, [copy.otherWorks, locale, visibleWorks]);
-  const projectWorks = useMemo(() => openProject ? portfolioWorks.filter((work) => work.project === openProject) : [], [openProject]);
+  const projectWorks = useMemo(() => openProject ? portfolioWorks.filter((work) => work.project === openProject) : [], [openProject, portfolioWorks]);
   const activeWorks = openProject ? projectWorks : visibleWorks;
   const selectedIndex = activeWorks.findIndex((work) => work.id === selectedId);
   const selectedWork = selectedIndex >= 0 ? activeWorks[selectedIndex] : null;
   const activeStrength = openStrength === null ? null : strengths[openStrength];
   const activeStrengthSlide = activeStrength?.slides[strengthPage] ?? null;
+
+  useEffect(() => {
+    const runtimeConfig = (window as Window & { __PORTFOLIO_CONFIG__?: PortfolioRuntimeConfig }).__PORTFOLIO_CONFIG__;
+    if (!runtimeConfig?.contentApi) return;
+    const controller = new AbortController();
+    fetch(`${runtimeConfig.contentApi.replace(/\/$/, "")}/portfolio`, { signal: controller.signal, cache: "no-store" })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error("content unavailable")))
+      .then((body: { works?: PortfolioWork[] }) => { if (Array.isArray(body.works)) setRuntimeWorks(body.works); })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = isEnglish ? "en" : "zh-CN";
@@ -220,7 +232,7 @@ export default function Home() {
           </div>
           <div className="hero-bottom"><p>{copy.heroTagline}</p><div className="hero-metrics"><span><b>17+</b> {copy.metrics[0]}</span><span><b>10+</b> {copy.metrics[1]}</span><span><b>7</b> {copy.metrics[2]}</span></div><a href="#experience" className="scroll-cue"><span>↓</span> {copy.scroll}</a></div>
         </div>
-        <div className="hero-showcase" aria-label={copy.showcaseLabel}><div className="hero-showcase-track">{[...projects, ...projects].map((project, index) => <button key={`${project.no}-${index}`} onClick={() => setOpenProject(project.folder)}><img src={asset(projectCover(project))} alt="" /><span>{projectLabel(project.folder, locale)}</span></button>)}</div></div>
+        <div className="hero-showcase" aria-label={copy.showcaseLabel}><div className="hero-showcase-track">{[...projects, ...projects].map((project, index) => <button key={`${project.no}-${index}`} onClick={() => setOpenProject(project.folder)}><img src={asset(projectCover(project, runtimeWorks))} alt="" /><span>{projectLabel(project.folder, locale)}</span></button>)}</div></div>
         <div className="hero-index">01 <span>/</span> 05</div>
       </section>
 
@@ -247,7 +259,7 @@ export default function Home() {
       <section className="projects section" id="projects">
         <div className="shell"><div className="section-head light" data-reveal><p>02 / SELECTED PROJECTS</p><p>2010s — {isEnglish ? "NOW" : "至今"}</p></div><div className="title-row" data-reveal><h2>PROJECT<br /><span>ARCHIVE</span></h2><p>{copy.projectSectionCopy.split("\n").map((line, index) => <span key={line}>{index > 0 && <br />}{line}</span>)}</p></div>
           <div className="project-grid">{projects.map(project => <button type="button" className="project-card" data-reveal data-tilt key={project.no} onClick={() => { setOpenProject(project.folder); setSelectedId(null); }} aria-label={`${copy.viewProject}: ${projectLabel(project.folder, locale)}`}>
-            <img src={asset(projectCover(project))} alt={`${projectLabel(project.folder, locale)} ${copy.projectCover}`} loading="lazy" /><div className="project-overlay" /><span className="project-no">{project.no}</span><div className="project-copy"><p>{project.type}</p><h3>{projectLabel(project.folder, locale)}</h3><span>{isEnglish ? project.subtitleEn : project.subtitleZh} · {portfolioWorks.filter((work) => work.project === project.folder).length} {copy.worksUnit}</span></div><span className="card-arrow">↗</span>
+            <img src={asset(projectCover(project, runtimeWorks))} alt={`${projectLabel(project.folder, locale)} ${copy.projectCover}`} loading="lazy" /><div className="project-overlay" /><span className="project-no">{project.no}</span><div className="project-copy"><p>{project.type}</p><h3>{projectLabel(project.folder, locale)}</h3><span>{isEnglish ? project.subtitleEn : project.subtitleZh} · {portfolioWorks.filter((work) => work.project === project.folder).length} {copy.worksUnit}</span></div><span className="card-arrow">↗</span>
           </button>)}</div>
         </div>
       </section>

@@ -1,0 +1,20 @@
+[Unit]
+Description=JASON Portfolio ECS Content Admin API
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+EnvironmentFile=/etc/jason-portfolio-admin.env
+ExecStart=/usr/bin/python3 /opt/jason-portfolio-admin/portfolio_admin_api.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/jason-portfolio /var/www/jason-portfolio/oss
+
+[Install]
+WantedBy=multi-user.target

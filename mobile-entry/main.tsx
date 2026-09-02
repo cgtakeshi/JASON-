@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import Home from "../app/page";
-import PortfolioAdmin from "../components/PortfolioAdmin";
+import PortfolioAdmin from "../components/PortfolioAdminEcs";
 import "../app/globals.css";
 
 const isAdminRoute = window.location.pathname === "/admin" || window.location.pathname.startsWith("/admin/");
