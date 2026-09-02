@@ -272,7 +272,8 @@ const WORK_TITLE_EN: Record<string, string> = {
 
 export const tagLabel = (tag: string, locale: Locale) => TAG_LABELS[tag]?.[locale] ?? tag;
 export const projectLabel = (project: string, locale: Locale) => PROJECT_LABELS[project]?.[locale] ?? project;
-export const workTitle = (title: string, locale: Locale) => locale === "en" ? WORK_TITLE_EN[title] ?? title : title;
+export const workTitle = (title: string, locale: Locale, customEnglishTitle?: string) =>
+  locale === "en" ? customEnglishTitle || WORK_TITLE_EN[title] || title : title;
 
 export const interpolate = (template: string, values: Record<string, string>) =>
   Object.entries(values).reduce((result, [key, value]) => result.replace(`{${key}}`, value), template);

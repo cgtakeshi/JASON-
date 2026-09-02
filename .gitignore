@@ -38,6 +38,7 @@ yarn-error.log*
 /.wrangler/
 /outputs/
 /work/
+*.tsbuildinfo
 
 # local previews, temporary inspection files, and generated deployment output
 /.tmp/

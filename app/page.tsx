@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import works from "./portfolio-manifest.json";
+import worksManifest from "./portfolio-manifest.json";
 import ScrubbedHeroVideo from "../components/ScrubbedHeroVideo";
+import type { PortfolioWork } from "../components/PortfolioAdmin";
 import { COPY, interpolate, projectLabel, tagLabel, workTitle, type Locale } from "./portfolio-i18n";
 
 type PortfolioRuntimeConfig = {
   assetBase?: string;
 };
+
+const works = worksManifest as PortfolioWork[];
 
 const asset = (path: string) => {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
@@ -31,9 +34,9 @@ const projects = [
 ];
 
 const projectCover = (project: (typeof projects)[number]) =>
-  works.find((work) => work.project === project.folder && work.cover)?.image ?? project.image;
+  works.find((work) => work.project === project.folder && work.cover && !work.hidden)?.image ?? project.image;
 
-const portfolioWorks = works.filter((work) => !work.cover);
+const portfolioWorks = works.filter((work) => !work.cover && !work.hidden);
 
 const experiences = [
   { period:"2025.02 — NOW", companyZh:"奕兆科技", companyEn:"Yizhao Technology", logo:"/logo-yizhao.png", mark:"YZ", roleZh:"美术总监", roleEn:"Art Director", projectZh:"ZODIAC HEROES · 欧美卡通三消", projectEn:"ZODIAC HEROES · Western Cartoon Match-3", descZh:"负责部门重建与 AI 赋能，制定 SOP、统一生产流程与交付标准，重构美术组织并承担最终品质审核。产品次留与转化数据提升 7 倍，超过竞品平均值。", descEn:"Rebuilt the art department and introduced AI-enabled workflows; established SOPs, unified production and delivery standards, reshaped the team structure and owned final quality approval. Improved day-two retention and conversion metrics sevenfold, surpassing competitor averages." },
@@ -261,10 +264,10 @@ export default function Home() {
           <div className="work-project-groups">{workGroups.map((group, groupIndex) => <section className="work-project-group" key={group.folder}>
             <div className="work-project-head" data-reveal><span>{String(groupIndex + 1).padStart(2, "0")}</span><h3>{group.title}</h3><p>{String(group.items.length).padStart(2, "0")} {copy.worksUnit.toUpperCase()}</p></div>
             <div className="works-grid">{group.items.map((work) => <article className="work-card" data-reveal data-tilt key={work.id}>
-              <button className="work-preview" style={{ aspectRatio: `${work.width} / ${work.height}` }} onClick={() => setSelectedId(work.id)} aria-label={`${copy.enlarge}: ${workTitle(work.title, locale)}`}>
-                {work.media === "video" ? <video src={asset(work.image)} muted loop playsInline preload="metadata" onMouseEnter={(event) => { void event.currentTarget.play().catch(() => undefined); }} onMouseLeave={(event) => { event.currentTarget.pause(); if (event.currentTarget.readyState > 0) event.currentTarget.currentTime = 0; }} /> : <img src={asset(work.image)} alt={workTitle(work.title, locale)} loading="lazy" width={work.width} height={work.height} />}<span>{work.media === "video" ? `${copy.play.toUpperCase()} ▶` : `${copy.view.toUpperCase()} ↗`}</span>
+              <button className="work-preview" style={{ aspectRatio: `${work.width} / ${work.height}` }} onClick={() => setSelectedId(work.id)} aria-label={`${copy.enlarge}: ${workTitle(work.title, locale, work.titleEn)}`}>
+                {work.media === "video" ? <video src={asset(work.image)} muted loop playsInline preload="metadata" onMouseEnter={(event) => { void event.currentTarget.play().catch(() => undefined); }} onMouseLeave={(event) => { event.currentTarget.pause(); if (event.currentTarget.readyState > 0) event.currentTarget.currentTime = 0; }} /> : <img src={asset(work.image)} alt={workTitle(work.title, locale, work.titleEn)} loading="lazy" width={work.width} height={work.height} />}<span>{work.media === "video" ? `${copy.play.toUpperCase()} ▶` : `${copy.view.toUpperCase()} ↗`}</span>
               </button>
-              <div className="work-meta"><p>{projectLabel(work.project, locale)} · {tagLabel(work.tag, locale)}</p><span>{String(visibleWorks.indexOf(work) + 1).padStart(3, "0")}</span></div><h3>{workTitle(work.title, locale)}</h3>
+              <div className="work-meta"><p>{projectLabel(work.project, locale)} · {tagLabel(work.tag, locale)}</p><span>{String(visibleWorks.indexOf(work) + 1).padStart(3, "0")}</span></div><h3>{workTitle(work.title, locale, work.titleEn)}</h3>
             </article>)}</div>
           </section>)}</div>
         </div>
@@ -273,14 +276,14 @@ export default function Home() {
       {openProject && <div className="project-gallery" role="dialog" aria-modal="true" aria-label={`${projectLabel(openProject, locale)} ${copy.projectArchive}`}>
         <header className="project-gallery-head"><div><span>{copy.projectArchive.toUpperCase()}</span><h2>{projectLabel(openProject, locale)}</h2><p>{String(projectWorks.length).padStart(2, "0")} {copy.worksUnit.toUpperCase()}</p></div><button className="modal-close-button" onClick={() => { setOpenProject(null); setSelectedId(null); }} aria-label={copy.closeGallery}>{copy.close.toUpperCase()} ×</button></header>
         <div className="project-gallery-grid">{projectWorks.map((work, index) => <article data-reveal data-tilt key={work.id}>
-          <button style={{ aspectRatio: `${work.width} / ${work.height}` }} onClick={() => setSelectedId(work.id)} aria-label={`${work.media === "video" ? copy.play : copy.enlarge}: ${workTitle(work.title, locale)}`}>{work.media === "video" ? <video src={asset(work.image)} muted loop playsInline preload="metadata" onMouseEnter={(event) => { void event.currentTarget.play().catch(() => undefined); }} onMouseLeave={(event) => { event.currentTarget.pause(); if (event.currentTarget.readyState > 0) event.currentTarget.currentTime = 0; }} /> : <img src={asset(work.image)} alt={workTitle(work.title, locale)} loading="lazy" width={work.width} height={work.height} />}<span>{work.media === "video" ? `${copy.play.toUpperCase()} ▶` : `${copy.view.toUpperCase()} ↗`}</span></button>
-          <div><p>{tagLabel(work.tag, locale)}</p><span>{String(index + 1).padStart(2, "0")}</span></div><h3>{workTitle(work.title, locale)}</h3>
+          <button style={{ aspectRatio: `${work.width} / ${work.height}` }} onClick={() => setSelectedId(work.id)} aria-label={`${work.media === "video" ? copy.play : copy.enlarge}: ${workTitle(work.title, locale, work.titleEn)}`}>{work.media === "video" ? <video src={asset(work.image)} muted loop playsInline preload="metadata" onMouseEnter={(event) => { void event.currentTarget.play().catch(() => undefined); }} onMouseLeave={(event) => { event.currentTarget.pause(); if (event.currentTarget.readyState > 0) event.currentTarget.currentTime = 0; }} /> : <img src={asset(work.image)} alt={workTitle(work.title, locale, work.titleEn)} loading="lazy" width={work.width} height={work.height} />}<span>{work.media === "video" ? `${copy.play.toUpperCase()} ▶` : `${copy.view.toUpperCase()} ↗`}</span></button>
+          <div><p>{tagLabel(work.tag, locale)}</p><span>{String(index + 1).padStart(2, "0")}</span></div><h3>{workTitle(work.title, locale, work.titleEn)}</h3>
         </article>)}</div>
       </div>}
 
-      {selectedWork && <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${workTitle(selectedWork.title, locale)} ${copy.imagePreview}`} onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedId(null); }}>
-        <div className="lightbox-top"><div><span>{projectLabel(selectedWork.project, locale)}</span><strong>{workTitle(selectedWork.title, locale)}</strong></div><button className="modal-close-button" onClick={() => setSelectedId(null)} aria-label={copy.closePreview}>{copy.close.toUpperCase()} ×</button></div>
-        <div className="lightbox-stage">{selectedWork.media === "video" ? <video src={asset(selectedWork.image)} controls autoPlay playsInline /> : <img src={asset(selectedWork.image)} alt={workTitle(selectedWork.title, locale)} width={selectedWork.width} height={selectedWork.height} />}</div>
+      {selectedWork && <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${workTitle(selectedWork.title, locale, selectedWork.titleEn)} ${copy.imagePreview}`} onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedId(null); }}>
+        <div className="lightbox-top"><div><span>{projectLabel(selectedWork.project, locale)}</span><strong>{workTitle(selectedWork.title, locale, selectedWork.titleEn)}</strong></div><button className="modal-close-button" onClick={() => setSelectedId(null)} aria-label={copy.closePreview}>{copy.close.toUpperCase()} ×</button></div>
+        <div className="lightbox-stage">{selectedWork.media === "video" ? <video src={asset(selectedWork.image)} controls autoPlay playsInline /> : <img src={asset(selectedWork.image)} alt={workTitle(selectedWork.title, locale, selectedWork.titleEn)} width={selectedWork.width} height={selectedWork.height} />}</div>
         <div className="lightbox-bottom"><button onClick={() => setSelectedId(activeWorks[(selectedIndex - 1 + activeWorks.length) % activeWorks.length].id)} aria-label={copy.previous}>← {copy.previous.toUpperCase()}</button><span>{String(selectedIndex + 1).padStart(3, "0")} / {String(activeWorks.length).padStart(3, "0")} · {tagLabel(selectedWork.tag, locale)}</span><button onClick={() => setSelectedId(activeWorks[(selectedIndex + 1) % activeWorks.length].id)} aria-label={copy.next}>{copy.next.toUpperCase()} →</button></div>
       </div>}
 
